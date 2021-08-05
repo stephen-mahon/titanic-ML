@@ -31,16 +31,29 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	var i int
+	var list []string
 	for scanner.Scan() {
 		if i != 0 && i < 2 {
 			//var name string
 			s := strings.Split(scanner.Text(), ",")
+			var temp string
 			for j := range s {
-				// Want to keep the name together even though it has a comma
-				fmt.Println(s[j])
+				if s[j] != "" {
+					list = append(list, s[j])
+				} else if s[j] != "" && (string(s[j][0]) == "\"" || string(s[j][len(s[j])-1]) == "\"") {
+					// Want to keep the name together even though it has a comma
+					temp += s[j]
+				} else if len(temp) > 1 {
+					list = append(list, temp)
+				} else {
+					list = append(list, s[j])
+				}
 			}
 		}
 		i++
 
+	}
+	for _, v := range list {
+		fmt.Printf("%s\n", v)
 	}
 }
